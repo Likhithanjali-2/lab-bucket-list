@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.TouristPlace;
 import service.ListOperations;
+import service.SetOperations;
 
 @WebServlet(urlPatterns= {"/set"})
 
@@ -30,10 +31,12 @@ public class SetServlet extends HttpServlet {
 		String remove = request.getParameter("delete");
 		String reset = request.getParameter("reset");
 		
+		TouristPlace tp = new TouristPlace(name,destination,rank);
+		SetOperations so = new SetOperations();
 		if(add!=null) {
 			// call the add method and store the return value in a set variable
 			
-			request.setAttribute("bucketListadd", /*pass the return value */);
+			request.setAttribute("bucketListadd", so.add(tp)/*pass the return value */);
 			request.setAttribute("message", "user added successfully");
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/list.jsp");
 			rd.forward(request, response);
@@ -43,7 +46,7 @@ public class SetServlet extends HttpServlet {
 			// call the remove method and store the return value in a set variable
 			
 			
-			request.setAttribute("bucketListremove", /*pass the return value */);
+			request.setAttribute("bucketListremove",so.remove(tp) /*pass the return value */);
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/list.jsp");
 			rd.forward(request, response);
 		}
@@ -53,7 +56,7 @@ public class SetServlet extends HttpServlet {
 			// call the sortByDestination method and store the return value in a set variable
 			
 			
-			request.setAttribute("bucketList", /*pass the return value */);
+			request.setAttribute("bucketList", so.sortByDestination(so.add(tp))/*pass the return value */);
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/list.jsp");
 			rd.forward(request, response);
 		}
@@ -61,7 +64,7 @@ public class SetServlet extends HttpServlet {
 		if(sortbyrank!=null) {
 			// call the sortByRank method and store the return value in a set variable
 			
-			request.setAttribute("bucketList", /*pass the return value */);
+			request.setAttribute("bucketList",so.sortByRank(so.add(tp)) /*pass the return value */);
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/list.jsp");
 			rd.forward(request, response);
 		}
@@ -69,7 +72,7 @@ public class SetServlet extends HttpServlet {
 		if(reset!=null) {
 			// call the reset method and store the return value in a set variable
 			
-			request.setAttribute("bucketList", /*pass the return value */);
+			request.setAttribute("bucketList",so.reset(so.add(tp)) /*pass the return value */);
 			RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/list.jsp");
 			rd.forward(request, response);
 		}
